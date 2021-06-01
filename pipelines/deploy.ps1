@@ -90,7 +90,7 @@ CLICheckAndFailOnError("Failed to create resource group '$ResourceGroupName'")
 "Creating storage account '$linkedStorageAccount' in Resource Group '$CoreResourceGroupName'"
 
 # create a storage account to use for the arm linked templates
-az storage account create -n $linkedStorageAccount -g $CoreResourceGroupName -l uksouth --sku Standard_LRS --kind StorageV2
+az storage account create -n $linkedStorageAccount -g $CoreResourceGroupName -l westeurope --sku Standard_LRS --kind StorageV2
 
 CLICheckAndFailOnError("Failed to create storage account '$linkedStorageAccount'")
 
