@@ -1,0 +1,84 @@
+# LUIS development build definition 
+
+trigger:
+- main
+- feature/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  azureSubscription: 'Livestockinformation-LUIS-Dev-Deploy'
+  productName: 'luis'
+  environmentName: 'dev'
+  environmentTagName: 'Development'
+  instance: '01'
+  environmentVariableKeyVault: 'kv-lz-$(productName)-ops-$(environmentName)-uks-$(instance)'
+  resourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
+  coreResourceGroupName: 'rg-lz-$(productName)-devops-$(environmentName)-uks-$(instance)'
+  linkedStorageAccount: 'st$(productName)$(environmentName)uks$(instance)'
+  linkedStorageContainer: '$(productName)$(instance)lt'
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build and Publish
+    workspace:
+      clean: all    
+    steps:
+
+    # - task: AzureKeyVault@1
+    #   displayName: 'download variables from key vault'
+    #   inputs:
+    #     azureSubscription: $(azureSubscription)
+    #     KeyVaultName: $(environmentVariableKeyVault)
+    #     SecretsFilter: '*'
+    #     RunAsPreJob: true    
+
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'tokenize arm parameters'
+      inputs:
+        rootDirectory: 'arm'
+        targetFiles: '*.parameters.json'
+        escapeType: none            
+
+    - task: CopyFiles@2
+      displayName: 'pack powershell core scripts'
+      inputs:
+        SourceFolder: pipelines
+        Contents: '*.ps1'
+        TargetFolder: '$(build.artifactstagingdirectory)/deploy'
+
+    - task: CopyFiles@2
+      displayName: 'pack infrastructure as code'
+      inputs:
+        SourceFolder: arm
+        Contents: '*.json'
+        TargetFolder: '$(build.artifactstagingdirectory)/deploy'       
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'publish artifacts'
+      inputs:
+        ArtifactName: $(productName)
+
+- stage: Deploy
+  displayName: Deploy
+  jobs:
+  - deployment: DeployInfrastructure
+    displayName: Deploy Infrastructure
+    timeoutInMinutes: 60 
+    environment: $(environmentName)
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            displayName: 'deploy infrastructure'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: pscore
+              scriptPath: '../$(productName)/deploy/deploy.ps1'
+              arguments: '-CoreResourceGroupName "$(coreResourceGroupName)" -LinkedStorageAccount "$(linkedStorageAccount)" -LinkedStorageContainer "$(linkedStorageContainer)" -ResourceGroupName "$(resourceGroupName)" -EnvironmentTagName "$(environmentTagName)"'
+              workingDirectory: '../$(productName)/deploy'

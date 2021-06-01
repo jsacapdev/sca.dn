@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containerUri": {
+      "type": "string"
+    },
+    "containerSasToken": {
+      "type": "string"
+    },
+    "environmentName": {
+      "type": "string",
+      "allowedValues": [
+        "dev"
+      ],
+      "metadata": {
+        "description": "The name of the envioroment."
+      }
+    },
+    "instance": {
+      "type": "string",
+      "metadata": {
+        "description": "The instance name of the resource."
+      }
+    },
+    "product": {
+      "type": "string",
+      "allowedValues": [
+        "luis"
+      ],
+      "metadata": {
+        "description": "The name of the envioroment."
+      }
+    }
+  },
+  "variables": {
+    "applicationInsightsName": "[concat('appi-lz-', parameters('product'), '-', parameters('environmentName'), '-uks-', parameters('instance'))]"
+  },
+  "resources": [
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('containerUri'), '/appinsights.template.json?', parameters('containerSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appInsightsName": {
+            "value": "[variables('applicationInsightsName')]"
+          }
+        }
+      },
+      "name": "api-appinsights-template",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "dependsOn": [
+      ]
+    }
+  ]
+}
