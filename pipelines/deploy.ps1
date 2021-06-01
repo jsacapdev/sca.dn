@@ -83,7 +83,7 @@ function UploadFileToBlobStorage([string[]]$files, $folderPrefix) {
 "Environment Tag Name -> '$EnvironmentTagName'"
 
 # create the resource group
-az group create -n $ResourceGroupName -l uksouth --tags "DataClassification=Internal" "Service=LUIS" "Criticality=Core Services" "Environment=$EnvironmentTagName"
+az group create -n $ResourceGroupName -l westeurope --tags "DataClassification=Internal" "Service=LIP" "Criticality=Core Services" "Environment=$EnvironmentTagName"
 
 CLICheckAndFailOnError("Failed to create resource group '$ResourceGroupName'")
 
