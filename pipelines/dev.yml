@@ -8,13 +8,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  productName: 'luis'
+  azureSubscription: 'dev-lip-sp-01'
+  productName: 'lip'
   environmentName: 'dev'
   environmentTagName: 'Development'
   instance: '01'
   environmentVariableKeyVault: 'kv-lz-$(productName)-ops-$(environmentName)-uks-$(instance)'
   resourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
-  coreResourceGroupName: 'rg-lz-$(productName)-devops-$(environmentName)-uks-$(instance)'
+  coreResourceGroupName: 'rg-lz-$(productName)-$(environmentName)-$(environmentName)-uks-$(instance)'
   linkedStorageAccount: 'st$(productName)$(environmentName)uks$(instance)'
   linkedStorageContainer: '$(productName)$(instance)lt'
 
@@ -53,3 +54,23 @@ stages:
       displayName: 'publish artifacts'
       inputs:
         ArtifactName: $(productName)
+
+- stage: Deploy
+  displayName: Deploy
+  jobs:
+  - deployment: DeployInfrastructure
+    displayName: Deploy Infrastructure
+    timeoutInMinutes: 60 
+    environment: $(environmentName)
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            displayName: 'deploy infrastructure'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: pscore
+              scriptPath: '../$(productName)/deploy/deploy.ps1'
+              arguments: '-CoreResourceGroupName "$(coreResourceGroupName)" -LinkedStorageAccount "$(linkedStorageAccount)" -LinkedStorageContainer "$(linkedStorageContainer)" -ResourceGroupName "$(resourceGroupName)" -EnvironmentTagName "$(environmentTagName)"'
+              workingDirectory: '../$(productName)/deploy'
