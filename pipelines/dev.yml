@@ -15,7 +15,7 @@ variables:
   instance: '01'
   environmentVariableKeyVault: 'kv-lz-$(productName)-ops-$(environmentName)-uks-$(instance)'
   resourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
-  coreResourceGroupName: 'rg-lz-$(productName)-$(environmentName)-$(environmentName)-uks-$(instance)'
+  coreResourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
   linkedStorageAccount: 'st$(productName)$(environmentName)uks$(instance)'
   linkedStorageContainer: '$(productName)$(instance)lt'
 
