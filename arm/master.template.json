@@ -34,6 +34,8 @@
     }
   },
   "variables": {
+    "appServicePlanName": "[concat('plan-lz-', parameters('product'), '-', parameters('environmentName'), '-uks-', parameters('instance'))]",
+    "apiName": "[concat('api-lz-', parameters('product'), '-', parameters('environmentName'), '-uks-', parameters('instance'))]",
     "applicationInsightsName": "[concat('appi-lz-', parameters('product'), '-', parameters('environmentName'), '-uks-', parameters('instance'))]"
   },
   "resources": [
@@ -54,6 +56,32 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "dependsOn": [
+      ]
+    },
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('containerUri'), '/appservice.template.json?', parameters('containerSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appServiceName": {
+            "value": "[variables('appServicePlanName')]"
+          },
+          "apiName": {
+            "value": "[variables('apiName')]"
+          },
+          "appInsightsName": {
+            "value": "[variables('applicationInsightsName')]"
+          }
+        }
+      },
+      "name": "api-template",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'api-appinsights-template')]"
       ]
     }
   ]
