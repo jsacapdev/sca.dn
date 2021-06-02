@@ -121,7 +121,7 @@ $token = $(az storage container generate-sas --name $linkedStorageContainer --ex
 $containerUri = "$(az storage account show -g $CoreResourceGroupName -n $linkedStorageAccount --query primaryEndpoints.blob -o json | ConvertFrom-Json)$linkedStorageContainer"
 
 # start the deployment of the infrastructure
-az deployment group create --name $($env:BUILD_BUILDID) --resource-group $ResourceGroupName --template-file ./master.template.json --parameters "@master.parameters.json" "containerUri=$containerUri" "containerSasToken=$token" --debug
+az deployment group create --name $($env:BUILD_BUILDID) --resource-group $ResourceGroupName --template-file ./master.template.json --parameters "@master.parameters.json" "containerUri=$containerUri" "containerSasToken=$token"
 
 CLICheckAndFailOnError("Failed to deploy master temaplte to '$ResourceGroupName'")
 

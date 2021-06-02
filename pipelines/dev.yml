@@ -38,12 +38,12 @@ stages:
         targetFiles: '*.parameters.json'
         escapeType: none
 
-    # - task: AzSKARMTemplateChecker@4
-    #   displayName: 'secure devops kit static arm analysis'
-    #   continueOnError: true
-    #   inputs:
-    #     ARMTemplateFilePath: 'arm'
-    #     ARMTemplateParameterFilePath: 'arm/master.parameters.json'
+    - task: AzSKARMTemplateChecker@4
+      displayName: 'secure devops kit (static)'
+      continueOnError: true
+      inputs:
+        ARMTemplateFilePath: 'arm'
+        ARMTemplateParameterFilePath: 'arm/master.parameters.json'
 
     - task: CopyFiles@2
       displayName: 'pack powershell core scripts'
@@ -124,6 +124,8 @@ stages:
               workingDirectory: '../$(productName)/deploy'
 
           - task: AzSKSVTs@4
+            displayName: 'secure devops kit (dynamic)'
+            continueOnError: true
             inputs:
               ConnectedServiceNameARM: $(azureSubscription)
               GenerateMethodParameterSetSelection: 'ResourceGroupName'
