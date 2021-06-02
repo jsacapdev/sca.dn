@@ -67,6 +67,13 @@ stages:
         targetdir: 'CodeCoverage'
         title: 'Report generated with Coverlet'                   
 
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/cobertura.xml'
+        reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+
     - task: DotNetCoreCLI@2
       displayName: 'publish api'
       inputs:
