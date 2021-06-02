@@ -2,13 +2,4 @@
 GET http://localhost:5000/weatherforecast HTTP/1.1
 
 ###
-GET https://api-lipwebapi-dev-001.azurewebsites.net/weatherforecast HTTP/1.1
-
-###
-GET https://app-lz-cla-bff-dev-uks-01.azurewebsites.net/weatherforecast HTTP/1.1
-
-###
-GET https://apim-lip-dev.azure-api.net/weatherforecast HTTP/1.1
-Host: apim-lip-dev.azure-api.net
-Ocp-Apim-Subscription-Key: a62cae7b51a34ce8b23d03729bffc06b
-Ocp-Apim-Trace: true
+GET https://api-lz-lip-dev-uks-01.azurewebsites.net/weatherforecast HTTP/1.1

@@ -48,7 +48,15 @@ stages:
       inputs:
         SourceFolder: arm
         Contents: '*.json'
-        TargetFolder: '$(build.artifactstagingdirectory)/deploy'       
+        TargetFolder: '$(build.artifactstagingdirectory)/deploy'      
+
+    - task: DotNetCoreCLI@2
+      displayName: 'publish api'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: 'src/scaapi/scaapi.csproj'
+        arguments: '-c release -o $(build.artifactstagingdirectory)/apis'         
 
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
