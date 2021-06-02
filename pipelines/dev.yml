@@ -52,13 +52,20 @@ stages:
         TargetFolder: '$(build.artifactstagingdirectory)/deploy' 
 
     - task: DotNetCoreCLI@2
-      displayName: 'Test premium gateway'
+      displayName: 'unit tests'
       inputs:
         command: 'test'
         projects: 'test/scaapi.tests/scaapi.tests.csproj'
         arguments: '-c release --collect:"XPlat Code Coverage"'
         publishTestResults: true
-        testRunTitle: 'API Unit Tests'             
+        testRunTitle: 'API Unit Tests'  
+
+    - task: reportgenerator@4
+      displayName: 'generate code coverage report'
+      inputs:
+        reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+        targetdir: 'CodeCoverage'
+        title: 'Report generated with Coverlet'                   
 
     - task: DotNetCoreCLI@2
       displayName: 'publish api'
