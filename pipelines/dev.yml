@@ -19,6 +19,7 @@ variables:
   apiName: 'api-lz-$(productName)-$(environmentName)-uks-$(instance)'
   linkedStorageAccount: 'st$(productName)$(environmentName)uks$(instance)'
   linkedStorageContainer: '$(productName)$(instance)lt'
+  disable.coverage.autogenerate: 'true'
 
 stages:
 - stage: Build
@@ -68,7 +69,7 @@ stages:
         title: 'Report generated with Coverlet'                   
 
     - task: PublishCodeCoverageResults@1
-      displayName: 'Publish code coverage'
+      displayName: 'publish code coverage'
       inputs:
         codeCoverageTool: Cobertura
         summaryFileLocation: 'CodeCoverage/Cobertura.xml'
