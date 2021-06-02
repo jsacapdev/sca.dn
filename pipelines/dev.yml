@@ -16,6 +16,7 @@ variables:
   environmentVariableKeyVault: 'kv-lz-$(productName)-ops-$(environmentName)-uks-$(instance)'
   resourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
   coreResourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
+  apiName: 'api-lz-$(productName)-$(environmentName)-uks-$(instance)'
   linkedStorageAccount: 'st$(productName)$(environmentName)uks$(instance)'
   linkedStorageContainer: '$(productName)$(instance)lt'
 
@@ -82,3 +83,23 @@ stages:
               scriptPath: '../$(productName)/deploy/deploy.ps1'
               arguments: '-CoreResourceGroupName "$(coreResourceGroupName)" -LinkedStorageAccount "$(linkedStorageAccount)" -LinkedStorageContainer "$(linkedStorageContainer)" -ResourceGroupName "$(resourceGroupName)" -EnvironmentTagName "$(environmentTagName)"'
               workingDirectory: '../$(productName)/deploy'
+
+  - deployment: DeployApi
+    displayName: Deploy Api
+    pool:
+      vmImage: 'Ubuntu-18.04'
+    dependsOn: DeployInfrastructure
+    condition: succeeded('DeployInfrastructure')
+    environment: $(environmentName)
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            displayName: 'deploy web app'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptLocation: inlineScript
+              scriptType: pscore
+              inlineScript: 'az webapp deployment source config-zip -g "$(resourceGroupName)" -n "$(apiName)" --src ../$(productName)/apis/scaapi.zip'
+            condition: always()
