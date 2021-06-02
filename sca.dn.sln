@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3048DFA6-9A7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scaapi", "src\scaapi\scaapi.csproj", "{425470C1-D3F9-45E7-9F32-D2D325298826}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A8764050-FE71-4B48-BB2E-283CA2E636AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scaapi.tests", "test\scaapi.tests\scaapi.tests.csproj", "{79F7FBED-0CC9-4779-AA54-4BC8035675BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +36,21 @@ Global
 		{425470C1-D3F9-45E7-9F32-D2D325298826}.Release|x64.Build.0 = Release|Any CPU
 		{425470C1-D3F9-45E7-9F32-D2D325298826}.Release|x86.ActiveCfg = Release|Any CPU
 		{425470C1-D3F9-45E7-9F32-D2D325298826}.Release|x86.Build.0 = Release|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Debug|x64.Build.0 = Debug|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Debug|x86.Build.0 = Debug|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Release|x64.ActiveCfg = Release|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Release|x64.Build.0 = Release|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Release|x86.ActiveCfg = Release|Any CPU
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{425470C1-D3F9-45E7-9F32-D2D325298826} = {3048DFA6-9A73-48CD-A8C1-0FEDBEBA7E18}
+		{79F7FBED-0CC9-4779-AA54-4BC8035675BF} = {A8764050-FE71-4B48-BB2E-283CA2E636AA}
 	EndGlobalSection
 EndGlobal

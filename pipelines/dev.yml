@@ -49,7 +49,16 @@ stages:
       inputs:
         SourceFolder: arm
         Contents: '*.json'
-        TargetFolder: '$(build.artifactstagingdirectory)/deploy'      
+        TargetFolder: '$(build.artifactstagingdirectory)/deploy' 
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Test premium gateway'
+      inputs:
+        command: 'test'
+        projects: 'test/scaapi.tests/scaapi.tests.csproj'
+        arguments: '-c release --collect:"XPlat Code Coverage"'
+        publishTestResults: true
+        testRunTitle: 'API Unit Tests'             
 
     - task: DotNetCoreCLI@2
       displayName: 'publish api'
