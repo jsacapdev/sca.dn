@@ -36,7 +36,12 @@ stages:
       inputs:
         rootDirectory: 'arm'
         targetFiles: '*.parameters.json'
-        escapeType: none            
+        escapeType: none
+
+    - task: AzSKARMTemplateChecker@4
+      inputs:
+        ARMTemplateFilePath: 'arm'
+        ARMTemplateParameterFilePath: 'arm/master.parameters.json'
 
     - task: CopyFiles@2
       displayName: 'pack powershell core scripts'
