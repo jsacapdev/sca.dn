@@ -39,6 +39,8 @@ stages:
         escapeType: none
 
     - task: AzSKARMTemplateChecker@4
+      displayName: 'secure devops kit static arm analysis'
+      continueOnError: true
       inputs:
         ARMTemplateFilePath: 'arm'
         ARMTemplateParameterFilePath: 'arm/master.parameters.json'
