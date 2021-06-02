@@ -13,7 +13,7 @@ variables:
   environmentName: 'dev'
   environmentTagName: 'Development'
   instance: '01'
-  environmentVariableKeyVault: 'kv-lz-$(productName)-ops-$(environmentName)-uks-$(instance)'
+  environmentVariableKeyVault: 'kv-lz-$(productName)-$(environmentName)-uks-$(instance)'
   resourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
   coreResourceGroupName: 'rg-lz-$(productName)-$(environmentName)-uks-$(instance)'
   apiName: 'api-lz-$(productName)-$(environmentName)-uks-$(instance)'
@@ -106,6 +106,14 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: AzureKeyVault@1
+            displayName: 'download variables from key vault'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              KeyVaultName: $(environmentVariableKeyVault)
+              SecretsFilter: '*'
+              RunAsPreJob: true    
+
           - task: AzureCLI@2
             displayName: 'deploy infrastructure'
             inputs:
@@ -114,6 +122,13 @@ stages:
               scriptPath: '../$(productName)/deploy/deploy.ps1'
               arguments: '-CoreResourceGroupName "$(coreResourceGroupName)" -LinkedStorageAccount "$(linkedStorageAccount)" -LinkedStorageContainer "$(linkedStorageContainer)" -ResourceGroupName "$(resourceGroupName)" -EnvironmentTagName "$(environmentTagName)"'
               workingDirectory: '../$(productName)/deploy'
+
+          - task: AzSKSVTs@4
+            inputs:
+              ConnectedServiceNameARM: $(azureSubscription)
+              GenerateMethodParameterSetSelection: 'ResourceGroupName'
+              ResourceGroupName: $(resourceGroupName)
+              SubscriptionId: $(subscriptionId)
 
   - deployment: DeployApi
     displayName: Deploy Api
