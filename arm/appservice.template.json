@@ -58,14 +58,14 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-08-01",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanSkuName'))]"
+        "[resourceId('Microsoft.Web/serverfarms', parameters('appServiceName'))]"
       ],
       "tags": {
         "displayName": "ResourceManagerAppService"
       },
       "properties": {
         "name": "[parameters('apiName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanSkuName'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServiceName'))]",
         "clientAffinityEnabled": false,
         "httpsOnly": true,
         "siteConfig": {
